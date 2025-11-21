@@ -89,63 +89,70 @@ export default function ClassApplyPage() {
 
     return (
         <div className="min-h-screen bg-background pt-32 pb-20 px-4">
-            <div className="container mx-auto max-w-2xl">
+            <div className="container mx-auto max-w-xl">
                 <FadeIn>
-                    <div className="text-center mb-12">
-                        <p className="text-primary text-sm tracking-widest uppercase mb-3 font-medium">
-                            수강 신청
+                    <div className="text-center mb-16">
+                        <p className="text-primary text-xs md:text-sm tracking-[0.2em] uppercase mb-4 font-medium">
+                            APPLICATION
                         </p>
-                        <h1 className="font-serif text-3xl md:text-4xl text-white mb-4">
+                        <h1 className="font-serif text-3xl md:text-4xl text-white mb-6">
                             {classInfo.title}
                         </h1>
+                        <div className="w-12 h-px bg-gray-800 mx-auto"></div>
                     </div>
                 </FadeIn>
 
                 <FadeIn delay={200}>
-                    <form onSubmit={handleSubmit} className="space-y-12">
+                    <form onSubmit={handleSubmit} className="space-y-16">
                         {/* Student Info */}
                         <section>
-                            <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                01. 수강생 정보
-                            </h3>
+                            <div className="flex items-baseline justify-between border-b border-gray-800 pb-4 mb-8">
+                                <h3 className="text-white text-xl font-serif">
+                                    01. 수강생 정보
+                                </h3>
+                                <span className="text-xs text-gray-500">* 필수 입력</span>
+                            </div>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="block text-gray-400 text-sm mb-2">이름</label>
+                                    <label className="block text-gray-400 text-sm mb-2 font-medium">이름</label>
                                     <input
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full bg-gray-900 border border-gray-800 text-white px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+                                        className="w-full bg-gray-900/50 border border-gray-800 text-white px-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder:text-gray-600"
                                         placeholder="이름을 입력하세요"
                                     />
-                                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                                    {errors.name && <p className="text-red-500 text-xs mt-2 ml-1">{errors.name}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-gray-400 text-sm mb-2">연락처</label>
+                                    <label className="block text-gray-400 text-sm mb-2 font-medium">연락처</label>
                                     <input
                                         type="tel"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
-                                        className="w-full bg-gray-900 border border-gray-800 text-white px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+                                        className="w-full bg-gray-900/50 border border-gray-800 text-white px-5 py-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-300 placeholder:text-gray-600"
                                         placeholder="010-0000-0000"
                                     />
-                                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                                    {errors.phone && <p className="text-red-500 text-xs mt-2 ml-1">{errors.phone}</p>}
                                 </div>
                             </div>
                         </section>
 
                         {/* Schedule Selection */}
                         <section>
-                            <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                02. 일정 선택
-                            </h3>
+                            <div className="flex items-baseline justify-between border-b border-gray-800 pb-4 mb-8">
+                                <h3 className="text-white text-xl font-serif">
+                                    02. 일정 선택
+                                </h3>
+                                <span className="text-xs text-gray-500">택 1</span>
+                            </div>
                             <div className="space-y-3">
                                 {classInfo.schedules.map((schedule) => (
                                     <label
                                         key={schedule}
-                                        className={`flex items-center p-4 border cursor-pointer transition-all duration-300 ${selectedSchedule === schedule
-                                            ? "border-primary bg-primary/10"
-                                            : "border-gray-800 bg-gray-900 hover:border-gray-600"
+                                        className={`relative flex items-center p-5 border cursor-pointer transition-all duration-300 group ${selectedSchedule === schedule
+                                            ? "border-primary bg-primary/5"
+                                            : "border-gray-800 bg-gray-900/30 hover:border-gray-600 hover:bg-gray-900"
                                             }`}
                                     >
                                         <input
@@ -156,34 +163,42 @@ export default function ClassApplyPage() {
                                             onChange={(e) => setSelectedSchedule(e.target.value)}
                                             className="hidden"
                                         />
-                                        <div className={`w-4 h-4 rounded-full border mr-4 flex items-center justify-center ${selectedSchedule === schedule ? "border-primary" : "border-gray-500"
+                                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center mr-5 transition-colors ${selectedSchedule === schedule ? "border-primary" : "border-gray-600 group-hover:border-gray-400"
                                             }`}>
                                             {selectedSchedule === schedule && (
-                                                <div className="w-2 h-2 rounded-full bg-primary" />
+                                                <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                                             )}
                                         </div>
-                                        <span className={selectedSchedule === schedule ? "text-white" : "text-gray-400"}>
+                                        <span className={`text-base transition-colors ${selectedSchedule === schedule ? "text-white font-medium" : "text-gray-400 group-hover:text-gray-300"}`}>
                                             {schedule}
                                         </span>
                                     </label>
                                 ))}
                             </div>
-                            {errors.schedule && <p className="text-red-500 text-xs mt-1">{errors.schedule}</p>}
+                            {errors.schedule && <p className="text-red-500 text-xs mt-2 ml-1">{errors.schedule}</p>}
                         </section>
 
                         {/* Refund Policy & Notes */}
                         <section>
-                            <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                03. 환불 규정 및 유의사항
-                            </h3>
-                            <div className="bg-gray-900 p-6 border border-gray-800 mb-4">
-                                <div className="text-gray-400 text-sm space-y-2 font-sans leading-relaxed">
-                                    <p>{classInfo.policy.refund}</p>
-                                    <p>{classInfo.policy.note}</p>
+                            <div className="border-b border-gray-800 pb-4 mb-8">
+                                <h3 className="text-white text-xl font-serif">
+                                    03. 환불 규정 및 유의사항
+                                </h3>
+                            </div>
+                            <div className="bg-gray-900/50 p-6 md:p-8 border border-gray-800 mb-6">
+                                <div className="text-gray-400 text-sm space-y-3 font-sans leading-relaxed break-keep">
+                                    <p className="flex items-start">
+                                        <span className="text-primary mr-2">•</span>
+                                        {classInfo.policy.refund}
+                                    </p>
+                                    <p className="flex items-start">
+                                        <span className="text-primary mr-2">•</span>
+                                        {classInfo.policy.note}
+                                    </p>
                                 </div>
                             </div>
-                            <label className="flex items-center cursor-pointer group">
-                                <div className={`w-5 h-5 border flex items-center justify-center mr-3 transition-colors ${agreed ? "border-primary bg-primary" : "border-gray-600 group-hover:border-gray-400"
+                            <label className="flex items-center cursor-pointer group select-none">
+                                <div className={`w-5 h-5 border flex items-center justify-center mr-3 transition-colors flex-shrink-0 ${agreed ? "border-primary bg-primary" : "border-gray-600 group-hover:border-gray-400"
                                     }`}>
                                     {agreed && (
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-black">
@@ -197,19 +212,19 @@ export default function ClassApplyPage() {
                                     onChange={(e) => setAgreed(e.target.checked)}
                                     className="hidden"
                                 />
-                                <span className="text-gray-300 text-sm group-hover:text-white transition-colors">
+                                <span className={`text-sm transition-colors ${agreed ? "text-white" : "text-gray-400 group-hover:text-gray-300"}`}>
                                     위 내용을 확인하였으며 동의합니다.
                                 </span>
                             </label>
-                            {errors.agreement && <p className="text-red-500 text-xs mt-1">{errors.agreement}</p>}
+                            {errors.agreement && <p className="text-red-500 text-xs mt-2 ml-1">{errors.agreement}</p>}
                         </section>
 
                         {/* Submit Button */}
-                        <div className="pt-8">
+                        <div className="pt-8 pb-10">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-white text-black font-bold py-4 text-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                                className="w-full bg-white text-black font-bold py-5 text-lg hover:bg-gray-100 transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-white/5"
                             >
                                 {isSubmitting ? "처리 중..." : "신청하기"}
                             </button>
