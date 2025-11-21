@@ -53,8 +53,16 @@ const orders = [
     { id: "ORD-005", name: "정해린", class: "Wedding Bouquet", date: "2024.10.05", status: "확정", amount: "250,000" },
 ];
 
+import ClassFormModal from "@/components/admin/ClassFormModal";
+
 export default function AdminClassPage() {
     const [activeTab, setActiveTab] = useState<"overview" | "applications">("overview");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCreate = (data: any) => {
+        console.log("Create Class:", data);
+        alert("새 클래스가 등록되었습니다. (데모)");
+    };
 
     return (
         <div className="space-y-8">
@@ -82,12 +90,21 @@ export default function AdminClassPage() {
                 </div>
 
                 {activeTab === "overview" && (
-                    <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-gray-200 transition-colors">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-gray-200 transition-colors"
+                    >
                         <Plus size={16} />
                         새 클래스 등록
                     </button>
                 )}
             </div>
+
+            <ClassFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleCreate}
+            />
 
             {/* Content */}
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
