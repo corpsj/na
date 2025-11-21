@@ -167,29 +167,29 @@ export default function AdminClassPage() {
                 {activeTab === "applications" && (
                     <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left">
+                            <table className="w-full text-left min-w-[800px]">
                                 <thead className="bg-black/50 text-gray-500 text-xs uppercase tracking-wider">
                                     <tr>
-                                        <th className="px-6 py-4 font-medium">주문번호</th>
-                                        <th className="px-6 py-4 font-medium">신청자</th>
-                                        <th className="px-6 py-4 font-medium">클래스</th>
-                                        <th className="px-6 py-4 font-medium">날짜</th>
-                                        <th className="px-6 py-4 font-medium">결제금액</th>
-                                        <th className="px-6 py-4 font-medium">상태</th>
-                                        <th className="px-6 py-4 font-medium text-right">관리</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">주문번호</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">신청자</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">클래스</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">날짜</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">결제금액</th>
+                                        <th className="px-6 py-4 font-medium whitespace-nowrap">상태</th>
+                                        <th className="px-6 py-4 font-medium text-right whitespace-nowrap">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-800">
                                     {orders.map((order) => (
                                         <tr key={order.id} className="hover:bg-white/5 transition-colors">
-                                            <td className="px-6 py-4 text-gray-500 text-sm font-mono">{order.id}</td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-6 py-4 text-gray-500 text-sm font-mono whitespace-nowrap">{order.id}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-white font-medium">{order.name}</div>
                                             </td>
                                             <td className="px-6 py-4 text-gray-400 text-sm">{order.class}</td>
-                                            <td className="px-6 py-4 text-gray-400 text-sm">{order.date}</td>
-                                            <td className="px-6 py-4 text-white text-sm">₩ {order.amount}</td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">{order.date}</td>
+                                            <td className="px-6 py-4 text-white text-sm whitespace-nowrap">₩ {order.amount}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                                                     order.status === '대기' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
                                                         'bg-red-500/10 text-red-500 border-red-500/20'
@@ -200,7 +200,7 @@ export default function AdminClassPage() {
                                                     {order.status}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 text-right">
+                                            <td className="px-6 py-4 text-right whitespace-nowrap">
                                                 <button className="text-gray-400 hover:text-white p-2">
                                                     <MoreVertical size={16} />
                                                 </button>
