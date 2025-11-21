@@ -1,9 +1,25 @@
+"use client";
+
+import { useState } from "react";
+import PortfolioFormModal from "@/components/admin/PortfolioFormModal";
+
 export default function AdminPortfolioPage() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCreate = (data: any) => {
+        console.log("Create Portfolio:", data);
+        // Here you would typically make an API call to save the data
+        alert("새 작품이 등록되었습니다. (데모)");
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-serif text-white">포트폴리오 관리</h1>
-                <button className="bg-primary text-white px-4 py-2 text-sm font-bold hover:bg-red-900 transition-colors">
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-primary text-white px-4 py-2 text-sm font-bold hover:bg-red-900 transition-colors"
+                >
                     + 새 작품 등록
                 </button>
             </div>
@@ -46,6 +62,12 @@ export default function AdminPortfolioPage() {
                     </tbody>
                 </table>
             </div>
+
+            <PortfolioFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleCreate}
+            />
         </div>
     );
 }
