@@ -2,9 +2,9 @@ export default function AdminPortfolioPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-serif text-white">Portfolio Management</h1>
+                <h1 className="text-2xl font-serif text-white">포트폴리오 관리</h1>
                 <button className="bg-primary text-white px-4 py-2 text-sm font-bold hover:bg-red-900 transition-colors">
-                    + ADD NEW WORK
+                    + 새 작품 등록
                 </button>
             </div>
 
@@ -12,11 +12,11 @@ export default function AdminPortfolioPage() {
                 <table className="w-full text-left text-sm">
                     <thead className="bg-gray-900 text-gray-400 font-medium border-b border-gray-800">
                         <tr>
-                            <th className="px-6 py-4">Image</th>
-                            <th className="px-6 py-4">Title</th>
-                            <th className="px-6 py-4">Category</th>
-                            <th className="px-6 py-4">Date</th>
-                            <th className="px-6 py-4 text-right">Actions</th>
+                            <th className="px-6 py-4">이미지</th>
+                            <th className="px-6 py-4">제목</th>
+                            <th className="px-6 py-4">카테고리</th>
+                            <th className="px-6 py-4">날짜</th>
+                            <th className="px-6 py-4 text-right">관리</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-800 text-gray-300">
@@ -38,8 +38,8 @@ export default function AdminPortfolioPage() {
                                 </td>
                                 <td className="px-6 py-4 text-gray-500">{item.date}</td>
                                 <td className="px-6 py-4 text-right space-x-2">
-                                    <button className="text-gray-400 hover:text-white transition-colors">Edit</button>
-                                    <button className="text-red-500 hover:text-red-400 transition-colors">Delete</button>
+                                    <button className="text-gray-400 hover:text-white transition-colors">수정</button>
+                                    <button className="text-red-500 hover:text-red-400 transition-colors">삭제</button>
                                 </td>
                             </tr>
                         ))}
