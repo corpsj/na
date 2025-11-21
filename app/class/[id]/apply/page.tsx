@@ -187,12 +187,10 @@ export default function ClassApplyPage() {
                             </div>
                             <div className="bg-gray-900/50 p-6 md:p-8 border border-gray-800 mb-6">
                                 <div className="text-gray-400 text-sm space-y-3 font-sans leading-relaxed break-keep">
-                                    <p className="flex items-start">
-                                        <span className="text-primary mr-2">•</span>
+                                    <p className="whitespace-pre-line">
                                         {classInfo.policy.refund}
                                     </p>
-                                    <p className="flex items-start">
-                                        <span className="text-primary mr-2">•</span>
+                                    <p className="whitespace-pre-line">
                                         {classInfo.policy.note}
                                     </p>
                                 </div>

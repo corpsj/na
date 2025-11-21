@@ -96,12 +96,12 @@ export default function ClassDetailPage() {
                                 <div className="space-y-4">
                                     <div className="text-left">
                                         <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">환불 규정</p>
-                                        <p className="text-gray-300 text-sm leading-relaxed font-light">{classDetail.policy.refund}</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed font-light whitespace-pre-line">{classDetail.policy.refund}</p>
                                     </div>
                                     <div className="w-full h-px bg-gray-800/50"></div>
                                     <div className="text-left">
                                         <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">유의사항</p>
-                                        <p className="text-gray-300 text-sm leading-relaxed font-light">{classDetail.policy.note}</p>
+                                        <p className="text-gray-300 text-sm leading-relaxed font-light whitespace-pre-line">{classDetail.policy.note}</p>
                                     </div>
                                 </div>
                             </div>
