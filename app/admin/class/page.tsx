@@ -56,6 +56,7 @@ const orders = [
 import ClassFormModal from "@/components/admin/ClassFormModal";
 import ScheduleManagementModal from "@/components/admin/ScheduleManagementModal";
 import OrderManagementModal from "@/components/admin/OrderManagementModal";
+import { toast } from "sonner";
 
 export default function AdminClassPage() {
     const [activeTab, setActiveTab] = useState<"overview" | "applications">("overview");
@@ -68,7 +69,7 @@ export default function AdminClassPage() {
 
     const handleCreate = (data: any) => {
         console.log("Create Class:", data);
-        alert("새 클래스가 등록되었습니다. (데모)");
+        toast.success("새 클래스가 등록되었습니다.");
     };
 
     const handleOrderClick = (order: any) => {
@@ -78,7 +79,7 @@ export default function AdminClassPage() {
 
     const handleOrderStatusUpdate = (orderId: string, newStatus: string) => {
         console.log(`Update Order ${orderId} to ${newStatus}`);
-        alert("주문 상태가 변경되었습니다. (데모)");
+        toast.success("주문 상태가 변경되었습니다.");
         // In a real app, you would update the 'orders' state here
     };
 

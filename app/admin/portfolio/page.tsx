@@ -4,6 +4,7 @@ import { useState } from "react";
 import PortfolioFormModal from "@/components/admin/PortfolioFormModal";
 import { Plus, MoreVertical } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function AdminPortfolioPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,10 +13,10 @@ export default function AdminPortfolioPage() {
     const handleCreate = (data: any) => {
         if (editingItem) {
             console.log("Update Portfolio:", { ...editingItem, ...data });
-            alert("작품이 수정되었습니다. (데모)");
+            toast.success("작품이 수정되었습니다.");
         } else {
             console.log("Create Portfolio:", data);
-            alert("새 작품이 등록되었습니다. (데모)");
+            toast.success("새 작품이 등록되었습니다.");
         }
         setEditingItem(null);
     };

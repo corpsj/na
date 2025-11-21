@@ -1,6 +1,9 @@
+```typescript
 "use client";
 
 import { useState } from "react";
+import { Save, Lock, Bell, Power } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AdminSettingsPage() {
     const [password, setPassword] = useState({
@@ -9,9 +12,25 @@ export default function AdminSettingsPage() {
         confirm: "",
     });
 
+    const [settings, setSettings] = useState({
+        maintenanceMode: false,
+        notifications: true,
+    });
+
     const handlePasswordChange = (e: React.FormEvent) => {
         e.preventDefault();
-        alert("비밀번호가 변경되었습니다. (데모)");
+        if (password.new !== password.confirm) {
+            toast.error("새 비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        console.log("Change Password:", password);
+        toast.success("비밀번호가 변경되었습니다.");
+        setPassword({ current: "", new: "", confirm: "" });
+    };
+
+    const handleSettingChange = (key: string, value: boolean) => {
+        setSettings({ ...settings, [key]: value });
+        toast.success("설정이 저장되었습니다.");
     };
 
     return (
@@ -26,6 +45,8 @@ export default function AdminSettingsPage() {
                         <label className="block text-sm font-medium text-gray-400 mb-1">현재 비밀번호</label>
                         <input
                             type="password"
+                            value={password.current}
+                            onChange={(e) => setPassword({ ...password, current: e.target.value })}
                             className="w-full bg-black/50 border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:border-primary"
                         />
                     </div>
