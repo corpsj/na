@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 
 export default function AdminLoginPage() {
+    const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
@@ -12,10 +13,10 @@ export default function AdminLoginPage() {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         // Simple mock authentication
-        if (password === "admin123") {
+        if (id === "admin" && password === "admin123") {
             router.push("/admin/dashboard");
         } else {
-            setError("비밀번호가 올바르지 않습니다.");
+            setError("아이디 또는 비밀번호가 올바르지 않습니다.");
         }
     };
 
@@ -28,12 +29,27 @@ export default function AdminLoginPage() {
                         Admin Access
                     </h2>
                     <p className="mt-2 text-sm text-gray-500">
-                        관리자 페이지 접근을 위해 비밀번호를 입력해주세요.
+                        관리자 페이지 접근을 위해 로그인해주세요.
                     </p>
                 </div>
 
                 <form onSubmit={handleLogin} className="mt-8 space-y-6">
                     <div className="space-y-4">
+                        <div>
+                            <label htmlFor="id" className="sr-only">
+                                ID
+                            </label>
+                            <input
+                                id="id"
+                                name="id"
+                                type="text"
+                                required
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-800 bg-gray-900/50 placeholder-gray-500 text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors rounded-t-md"
+                                placeholder="ID"
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
+                            />
+                        </div>
                         <div>
                             <label htmlFor="password" className="sr-only">
                                 Password
@@ -43,7 +59,7 @@ export default function AdminLoginPage() {
                                 name="password"
                                 type="password"
                                 required
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-800 bg-gray-900/50 placeholder-gray-500 text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors"
+                                className="appearance-none relative block w-full px-4 py-3 border border-gray-800 bg-gray-900/50 placeholder-gray-500 text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-colors rounded-b-md border-t-0"
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
