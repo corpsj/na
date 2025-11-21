@@ -55,15 +55,31 @@ const orders = [
 
 import ClassFormModal from "@/components/admin/ClassFormModal";
 import ScheduleManagementModal from "@/components/admin/ScheduleManagementModal";
+import OrderManagementModal from "@/components/admin/OrderManagementModal";
 
 export default function AdminClassPage() {
     const [activeTab, setActiveTab] = useState<"overview" | "applications">("overview");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
+    // Order Management State
+    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+    const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
     const handleCreate = (data: any) => {
         console.log("Create Class:", data);
         alert("새 클래스가 등록되었습니다. (데모)");
+    };
+
+    const handleOrderClick = (order: any) => {
+        setSelectedOrder(order);
+        setIsOrderModalOpen(true);
+    };
+
+    const handleOrderStatusUpdate = (orderId: string, newStatus: string) => {
+        console.log(`Update Order ${orderId} to ${newStatus}`);
+        alert("주문 상태가 변경되었습니다. (데모)");
+        // In a real app, you would update the 'orders' state here
     };
 
     return (
@@ -111,6 +127,13 @@ export default function AdminClassPage() {
             <ScheduleManagementModal
                 isOpen={isScheduleModalOpen}
                 onClose={() => setIsScheduleModalOpen(false)}
+            />
+
+            <OrderManagementModal
+                isOpen={isOrderModalOpen}
+                onClose={() => setIsOrderModalOpen(false)}
+                order={selectedOrder}
+                onUpdateStatus={handleOrderStatusUpdate}
             />
 
             {/* Content */}
@@ -210,7 +233,10 @@ export default function AdminClassPage() {
                                         </div>
                                     </div>
                                     <div className="pt-3 border-t border-gray-800 flex justify-end">
-                                        <button className="text-sm text-gray-400 hover:text-white flex items-center gap-1">
+                                        <button
+                                            onClick={() => handleOrderClick(order)}
+                                            className="text-sm text-gray-400 hover:text-white flex items-center gap-1"
+                                        >
                                             <MoreVertical size={14} /> 관리
                                         </button>
                                     </div>
@@ -255,7 +281,10 @@ export default function AdminClassPage() {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right whitespace-nowrap">
-                                                    <button className="text-gray-400 hover:text-white p-2">
+                                                    <button
+                                                        onClick={() => handleOrderClick(order)}
+                                                        className="text-gray-400 hover:text-white p-2"
+                                                    >
                                                         <MoreVertical size={16} />
                                                     </button>
                                                 </td>
