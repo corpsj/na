@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --background: #000000;
+    --foreground: #FFFFFF;
+
+    /* Primary: Obsidian Black (Background) */
+    --primary: #8B0000;
+    /* Crimson Red */
+    --primary-foreground: #FFFFFF;
+
+    /* Secondary: Crimson Red (Accents) */
+    --secondary: #333333;
+    /* Charcoal Gray */
+    --secondary-foreground: #FFFFFF;
+
+    /* Muted */
+    --muted: #1a1a1a;
+    --muted-foreground: #a3a3a3;
+
+    --border: #333333;
+    --input: #333333;
+    --ring: #8B0000;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
