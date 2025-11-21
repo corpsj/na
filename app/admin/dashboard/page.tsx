@@ -17,26 +17,6 @@ export default function AdminDashboard() {
                     </div>
                 ))}
             </div>
-
-            {/* Recent Activity */}
-            <div className="bg-gray-900/30 border border-gray-800 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-white mb-6">최근 활동</h3>
-                <div className="space-y-4">
-                    {[
-                        { action: "새 포트폴리오 등록", target: "겨울 웨딩 부케", time: "2시간 전" },
-                        { action: "클래스 상태 변경", target: "핸드타이드 마스터클래스", time: "5시간 전" },
-                        { action: "새로운 문의", target: "웨딩 플라워 상담", time: "1일 전" },
-                    ].map((activity, i) => (
-                        <div key={i} className="flex items-center justify-between py-3 border-b border-gray-800 last:border-0">
-                            <div>
-                                <p className="text-white text-sm font-medium">{activity.action}</p>
-                                <p className="text-gray-500 text-xs">{activity.target}</p>
-                            </div>
-                            <span className="text-gray-600 text-xs">{activity.time}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 }

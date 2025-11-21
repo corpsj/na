@@ -165,50 +165,92 @@ export default function AdminClassPage() {
 
                 {/* APPLICATIONS TAB */}
                 {activeTab === "applications" && (
-                    <div className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left min-w-[800px]">
-                                <thead className="bg-black/50 text-gray-500 text-xs uppercase tracking-wider">
-                                    <tr>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">주문번호</th>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">신청자</th>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">클래스</th>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">날짜</th>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">결제금액</th>
-                                        <th className="px-6 py-4 font-medium whitespace-nowrap">상태</th>
-                                        <th className="px-6 py-4 font-medium text-right whitespace-nowrap">관리</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-800">
-                                    {orders.map((order) => (
-                                        <tr key={order.id} className="hover:bg-white/5 transition-colors">
-                                            <td className="px-6 py-4 text-gray-500 text-sm font-mono whitespace-nowrap">{order.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-white font-medium">{order.name}</div>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-400 text-sm">{order.class}</td>
-                                            <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">{order.date}</td>
-                                            <td className="px-6 py-4 text-white text-sm whitespace-nowrap">₩ {order.amount}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
-                                                    order.status === '대기' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
-                                                        'bg-red-500/10 text-red-500 border-red-500/20'
-                                                    }`}>
-                                                    {order.status === '확정' && <CheckCircle2 size={12} />}
-                                                    {order.status === '대기' && <Clock size={12} />}
-                                                    {order.status === '취소' && <XCircle size={12} />}
-                                                    {order.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-right whitespace-nowrap">
-                                                <button className="text-gray-400 hover:text-white p-2">
-                                                    <MoreVertical size={16} />
-                                                </button>
-                                            </td>
+                    <div className="space-y-4">
+                        {/* Mobile View (Cards) */}
+                        <div className="md:hidden space-y-4">
+                            {orders.map((order) => (
+                                <div key={order.id} className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 space-y-3">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <span className="text-xs text-gray-500 font-mono">{order.id}</span>
+                                            <h3 className="text-white font-medium mt-1">{order.name}</h3>
+                                        </div>
+                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                            order.status === '대기' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                                                'bg-red-500/10 text-red-500 border-red-500/20'
+                                            }`}>
+                                            {order.status}
+                                        </span>
+                                    </div>
+                                    <div className="space-y-1 text-sm text-gray-400">
+                                        <div className="flex justify-between">
+                                            <span>클래스</span>
+                                            <span className="text-white">{order.class}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>날짜</span>
+                                            <span className="text-white">{order.date}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>결제금액</span>
+                                            <span className="text-white">₩ {order.amount}</span>
+                                        </div>
+                                    </div>
+                                    <div className="pt-3 border-t border-gray-800 flex justify-end">
+                                        <button className="text-sm text-gray-400 hover:text-white flex items-center gap-1">
+                                            <MoreVertical size={14} /> 관리
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Desktop View (Table) */}
+                        <div className="hidden md:block bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left min-w-[800px]">
+                                    <thead className="bg-black/50 text-gray-500 text-xs uppercase tracking-wider">
+                                        <tr>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">주문번호</th>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">신청자</th>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">클래스</th>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">날짜</th>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">결제금액</th>
+                                            <th className="px-6 py-4 font-medium whitespace-nowrap">상태</th>
+                                            <th className="px-6 py-4 font-medium text-right whitespace-nowrap">관리</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-800">
+                                        {orders.map((order) => (
+                                            <tr key={order.id} className="hover:bg-white/5 transition-colors">
+                                                <td className="px-6 py-4 text-gray-500 text-sm font-mono whitespace-nowrap">{order.id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-white font-medium">{order.name}</div>
+                                                </td>
+                                                <td className="px-6 py-4 text-gray-400 text-sm">{order.class}</td>
+                                                <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">{order.date}</td>
+                                                <td className="px-6 py-4 text-white text-sm whitespace-nowrap">₩ {order.amount}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                                        order.status === '대기' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                                                            'bg-red-500/10 text-red-500 border-red-500/20'
+                                                        }`}>
+                                                        {order.status === '확정' && <CheckCircle2 size={12} />}
+                                                        {order.status === '대기' && <Clock size={12} />}
+                                                        {order.status === '취소' && <XCircle size={12} />}
+                                                        {order.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 text-right whitespace-nowrap">
+                                                    <button className="text-gray-400 hover:text-white p-2">
+                                                        <MoreVertical size={16} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 )}
