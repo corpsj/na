@@ -54,10 +54,12 @@ const orders = [
 ];
 
 import ClassFormModal from "@/components/admin/ClassFormModal";
+import ScheduleManagementModal from "@/components/admin/ScheduleManagementModal";
 
 export default function AdminClassPage() {
     const [activeTab, setActiveTab] = useState<"overview" | "applications">("overview");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
     const handleCreate = (data: any) => {
         console.log("Create Class:", data);
@@ -106,6 +108,11 @@ export default function AdminClassPage() {
                 onSubmit={handleCreate}
             />
 
+            <ScheduleManagementModal
+                isOpen={isScheduleModalOpen}
+                onClose={() => setIsScheduleModalOpen(false)}
+            />
+
             {/* Content */}
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
 
@@ -150,10 +157,16 @@ export default function AdminClassPage() {
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
-                                        <button className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700 transition-colors">
+                                        <button
+                                            onClick={() => setIsModalOpen(true)}
+                                            className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700 transition-colors"
+                                        >
                                             상세 수정
                                         </button>
-                                        <button className="px-4 py-2 border border-gray-700 text-gray-300 text-sm rounded-lg hover:bg-gray-800 transition-colors">
+                                        <button
+                                            onClick={() => setIsScheduleModalOpen(true)}
+                                            className="px-4 py-2 border border-gray-700 text-gray-300 text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                                        >
                                             일정 관리
                                         </button>
                                     </div>
