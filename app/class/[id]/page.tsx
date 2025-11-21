@@ -47,16 +47,16 @@ export default function ClassDetailPage() {
                     <div className="bg-black/80 backdrop-blur-md border border-gray-800 mb-24">
                         <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-800">
                             <div className="p-8 text-left group hover:bg-white/5 transition-colors duration-300">
-                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">Date & Time</h3>
+                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">일시</h3>
                                 <p className="text-white text-lg font-serif mb-1">{classDetail.date}</p>
                                 <p className="text-gray-500 text-sm font-light">{classDetail.time}</p>
                             </div>
                             <div className="p-8 text-left group hover:bg-white/5 transition-colors duration-300">
-                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">Location</h3>
+                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">장소</h3>
                                 <p className="text-white text-lg font-serif">{classDetail.location}</p>
                             </div>
                             <div className="p-8 text-left group hover:bg-white/5 transition-colors duration-300">
-                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">Level / Capacity</h3>
+                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">난이도 및 정원</h3>
                                 <div className="flex items-center gap-2">
                                     <span className="text-white text-lg font-serif">{classDetail.level}</span>
                                     <span className="w-px h-3 bg-gray-700"></span>
@@ -64,7 +64,7 @@ export default function ClassDetailPage() {
                                 </div>
                             </div>
                             <div className="p-8 text-left group hover:bg-white/5 transition-colors duration-300">
-                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">Price</h3>
+                                <h3 className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-3 opacity-80 group-hover:opacity-100 transition-opacity">수강료</h3>
                                 <p className="text-white text-lg font-serif">{classDetail.price}</p>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ export default function ClassDetailPage() {
                     <div className="md:col-span-8">
                         <FadeIn delay={300}>
                             <h3 className="text-white text-xl font-serif mb-8 border-l-2 border-primary pl-4">
-                                Class Overview
+                                클래스 소개
                             </h3>
                             <div className="prose prose-invert max-w-none">
                                 <p className="text-gray-300 leading-loose text-lg font-light whitespace-pre-line break-keep">
@@ -91,16 +91,16 @@ export default function ClassDetailPage() {
                         <FadeIn delay={400}>
                             <div className="bg-gray-900/30 border border-gray-800 p-8 sticky top-32">
                                 <h3 className="text-white text-sm font-bold tracking-widest uppercase mb-6 text-left">
-                                    Refund Policy & Notes
+                                    환불 규정 및 유의사항
                                 </h3>
                                 <div className="space-y-4">
                                     <div className="text-left">
-                                        <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">Refund</p>
+                                        <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">환불 규정</p>
                                         <p className="text-gray-300 text-sm leading-relaxed font-light">{classDetail.policy.refund}</p>
                                     </div>
                                     <div className="w-full h-px bg-gray-800/50"></div>
                                     <div className="text-left">
-                                        <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">Note</p>
+                                        <p className="text-gray-500 text-xs mb-1 uppercase tracking-wider">유의사항</p>
                                         <p className="text-gray-300 text-sm leading-relaxed font-light">{classDetail.policy.note}</p>
                                     </div>
                                 </div>
