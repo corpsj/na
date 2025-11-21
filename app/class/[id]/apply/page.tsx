@@ -106,22 +106,22 @@ export default function ClassApplyPage() {
                         {/* Student Info */}
                         <section>
                             <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                01. Student Info
+                                01. 수강생 정보
                             </h3>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="block text-gray-400 text-sm mb-2">Name</label>
+                                    <label className="block text-gray-400 text-sm mb-2">이름</label>
                                     <input
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         className="w-full bg-gray-900 border border-gray-800 text-white px-4 py-3 focus:outline-none focus:border-primary transition-colors"
-                                        placeholder="Enter your name"
+                                        placeholder="이름을 입력하세요"
                                     />
                                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-gray-400 text-sm mb-2">Phone</label>
+                                    <label className="block text-gray-400 text-sm mb-2">연락처</label>
                                     <input
                                         type="tel"
                                         value={phone}
@@ -137,7 +137,7 @@ export default function ClassApplyPage() {
                         {/* Schedule Selection */}
                         <section>
                             <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                02. Schedule Selection
+                                02. 일정 선택
                             </h3>
                             <div className="space-y-3">
                                 {classInfo.schedules.map((schedule) => (
@@ -174,7 +174,7 @@ export default function ClassApplyPage() {
                         {/* Refund Policy & Notes */}
                         <section>
                             <h3 className="text-white text-lg border-b border-gray-800 pb-4 mb-6 font-serif">
-                                03. Refund Policy & Notes
+                                03. 환불 규정 및 유의사항
                             </h3>
                             <div className="bg-gray-900 p-6 border border-gray-800 mb-4">
                                 <div className="text-gray-400 text-sm space-y-2 font-sans leading-relaxed">
@@ -198,7 +198,7 @@ export default function ClassApplyPage() {
                                     className="hidden"
                                 />
                                 <span className="text-gray-300 text-sm group-hover:text-white transition-colors">
-                                    I have read and agree to the policy above.
+                                    위 내용을 확인하였으며 동의합니다.
                                 </span>
                             </label>
                             {errors.agreement && <p className="text-red-500 text-xs mt-1">{errors.agreement}</p>}
@@ -211,7 +211,7 @@ export default function ClassApplyPage() {
                                 disabled={isSubmitting}
                                 className="w-full bg-white text-black font-bold py-4 text-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
                             >
-                                {isSubmitting ? "Submitting..." : "Submit Application"}
+                                {isSubmitting ? "처리 중..." : "신청하기"}
                             </button>
                         </div>
                     </form>
