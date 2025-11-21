@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import PortfolioFormModal from "@/components/admin/PortfolioFormModal";
 import { Plus, MoreVertical } from "lucide-react";
