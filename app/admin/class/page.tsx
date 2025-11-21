@@ -141,23 +141,23 @@ export default function AdminClassPage() {
 
                 {/* OVERVIEW TAB */}
                 {activeTab === "overview" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                         {classes.map((cls) => (
-                            <div key={cls.id} className="group bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-600 transition-all duration-300">
-                                <div className="relative h-48 w-full overflow-hidden">
+                            <div key={cls.id} className="group bg-gray-900/50 border border-gray-800 rounded-xl md:rounded-2xl overflow-hidden hover:border-gray-600 transition-all duration-300 flex flex-col">
+                                <div className="relative h-32 md:h-48 w-full overflow-hidden shrink-0">
                                     <Image
                                         src={cls.image}
                                         alt={cls.title}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
-                                    <div className="absolute top-4 right-4">
-                                        <button className="bg-black/50 backdrop-blur-md p-2 rounded-full text-white hover:bg-black transition-colors">
-                                            <MoreVertical size={16} />
+                                    <div className="absolute top-2 right-2 md:top-4 md:right-4">
+                                        <button className="bg-black/50 backdrop-blur-md p-1.5 md:p-2 rounded-full text-white hover:bg-black transition-colors">
+                                            <MoreVertical size={14} className="md:w-4 md:h-4" />
                                         </button>
                                     </div>
-                                    <div className="absolute bottom-4 left-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-md ${cls.status === '모집중' ? 'bg-green-500/80 text-white' :
+                                    <div className="absolute bottom-2 left-2 md:bottom-4 md:left-4">
+                                        <span className={`px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-medium backdrop-blur-md ${cls.status === '모집중' ? 'bg-green-500/80 text-white' :
                                             cls.status === '마감' ? 'bg-yellow-500/80 text-black' :
                                                 'bg-gray-500/80 text-white'
                                             }`}>
@@ -165,32 +165,32 @@ export default function AdminClassPage() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="p-6">
-                                    <p className="text-primary text-xs uppercase tracking-widest font-medium mb-2">{cls.category}</p>
-                                    <h3 className="text-xl text-white font-serif mb-4">{cls.title}</h3>
+                                <div className="p-3 md:p-6 flex flex-col flex-1">
+                                    <p className="text-primary text-[10px] md:text-xs uppercase tracking-widest font-medium mb-1 md:mb-2 truncate">{cls.category}</p>
+                                    <h3 className="text-sm md:text-xl text-white font-serif mb-2 md:mb-4 line-clamp-1">{cls.title}</h3>
 
-                                    <div className="flex items-center justify-between text-sm text-gray-400 mb-6">
-                                        <div className="flex items-center gap-2">
-                                            <Users size={14} />
-                                            <span>{cls.applicants} / {cls.capacity}</span>
+                                    <div className="flex items-center justify-between text-xs md:text-sm text-gray-400 mb-3 md:mb-6 mt-auto">
+                                        <div className="flex items-center gap-1 md:gap-2">
+                                            <Users size={12} className="md:w-3.5 md:h-3.5" />
+                                            <span>{cls.applicants}/{cls.capacity}</span>
                                         </div>
                                         <div className="font-medium text-white">
-                                            ₩ {cls.price}
+                                            ₩ {cls.price.toLocaleString()}
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                                         <button
                                             onClick={() => setIsModalOpen(true)}
-                                            className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-700 transition-colors"
+                                            className="px-2 py-1.5 md:px-4 md:py-2 bg-gray-800 text-white text-xs md:text-sm rounded-md md:rounded-lg hover:bg-gray-700 transition-colors whitespace-nowrap"
                                         >
-                                            상세 수정
+                                            수정
                                         </button>
                                         <button
                                             onClick={() => setIsScheduleModalOpen(true)}
-                                            className="px-4 py-2 border border-gray-700 text-gray-300 text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                                            className="px-2 py-1.5 md:px-4 md:py-2 border border-gray-700 text-gray-300 text-xs md:text-sm rounded-md md:rounded-lg hover:bg-gray-800 transition-colors whitespace-nowrap"
                                         >
-                                            일정 관리
+                                            일정
                                         </button>
                                     </div>
                                 </div>
@@ -203,42 +203,32 @@ export default function AdminClassPage() {
                 {activeTab === "applications" && (
                     <div className="space-y-4">
                         {/* Mobile View (Cards) */}
-                        <div className="md:hidden space-y-4">
+                        <div className="md:hidden grid grid-cols-2 gap-3">
                             {orders.map((order) => (
-                                <div key={order.id} className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 space-y-3">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <span className="text-xs text-gray-500 font-mono">{order.id}</span>
-                                            <h3 className="text-white font-medium mt-1">{order.name}</h3>
-                                        </div>
-                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                <div key={order.id} className="bg-gray-900/50 border border-gray-800 rounded-lg p-3 flex flex-col h-full">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${order.status === '확정' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                                             order.status === '대기' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
                                                 'bg-red-500/10 text-red-500 border-red-500/20'
                                             }`}>
                                             {order.status}
                                         </span>
-                                    </div>
-                                    <div className="space-y-1 text-sm text-gray-400">
-                                        <div className="flex justify-between">
-                                            <span>클래스</span>
-                                            <span className="text-white">{order.class}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>날짜</span>
-                                            <span className="text-white">{order.date}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>결제금액</span>
-                                            <span className="text-white">₩ {order.amount}</span>
-                                        </div>
-                                    </div>
-                                    <div className="pt-3 border-t border-gray-800 flex justify-end">
                                         <button
                                             onClick={() => handleOrderClick(order)}
-                                            className="text-sm text-gray-400 hover:text-white flex items-center gap-1"
+                                            className="text-gray-400 hover:text-white"
                                         >
-                                            <MoreVertical size={14} /> 관리
+                                            <MoreVertical size={14} />
                                         </button>
+                                    </div>
+
+                                    <div className="flex-1 space-y-1 mb-3">
+                                        <h3 className="text-white text-sm font-medium truncate">{order.name}</h3>
+                                        <p className="text-xs text-gray-500 truncate">{order.class}</p>
+                                        <p className="text-xs text-gray-400">{order.date}</p>
+                                    </div>
+
+                                    <div className="pt-2 border-t border-gray-800 flex justify-between items-center">
+                                        <span className="text-xs text-white font-medium">₩ {order.amount.toLocaleString()}</span>
                                     </div>
                                 </div>
                             ))}

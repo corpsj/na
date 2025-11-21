@@ -1,8 +1,7 @@
-"use client";
-
 import { useState } from "react";
 import PortfolioFormModal from "@/components/admin/PortfolioFormModal";
-import { Plus } from "lucide-react";
+import { Plus, MoreVertical } from "lucide-react";
+import Image from "next/image";
 
 export default function AdminPortfolioPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +44,43 @@ export default function AdminPortfolioPage() {
                 </button>
             </div>
 
-            <div className="bg-gray-900/30 border border-gray-800 rounded-lg overflow-hidden">
+            {/* Mobile View (Cards) */}
+            <div className="md:hidden grid grid-cols-2 gap-3">
+                {[
+                    { id: 1, title: "Winter Wedding Bouquet", category: "Wedding", date: "2024-11-20", description: "Beautiful winter bouquet", image: "" },
+                    { id: 2, title: "Christmas Wreath", category: "Wreath", date: "2024-11-18", description: "Festive wreath", image: "" },
+                    { id: 3, title: "Vase Arrangement", category: "Arrangement", date: "2024-11-15", description: "Elegant vase arrangement", image: "" },
+                    { id: 4, title: "Bridal Shower Decor", category: "Event", date: "2024-11-10", description: "Romantic decor", image: "" },
+                ].map((item) => (
+                    <div key={item.id} className="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden flex flex-col">
+                        <div className="relative aspect-square w-full bg-gray-800">
+                            {item.image ? (
+                                <Image src={item.image} alt={item.title} fill className="object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-700">
+                                    <span className="text-xs">No Image</span>
+                                </div>
+                            )}
+                            <div className="absolute top-2 right-2">
+                                <button
+                                    onClick={() => handleEdit(item)}
+                                    className="bg-black/50 backdrop-blur-md p-1.5 rounded-full text-white hover:bg-black transition-colors"
+                                >
+                                    <MoreVertical size={14} />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="p-3 flex flex-col flex-1">
+                            <span className="text-[10px] text-primary uppercase tracking-wider font-medium mb-1">{item.category}</span>
+                            <h3 className="text-sm text-white font-medium line-clamp-2 mb-2">{item.title}</h3>
+                            <p className="text-xs text-gray-500 mt-auto">{item.date}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Desktop View (Table) */}
+            <div className="hidden md:block bg-gray-900/30 border border-gray-800 rounded-lg overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm min-w-[600px]">
                         <thead className="bg-gray-900 text-gray-400 font-medium border-b border-gray-800">
