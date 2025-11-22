@@ -22,6 +22,15 @@ export const metadata: Metadata = {
     },
     description: "변화(變花)는 꽃을 통해 일상의 특별한 순간을 디자인합니다. 플로리스트 포트폴리오 및 원데이 클래스.",
     keywords: ["플로리스트", "꽃꽂이", "원데이클래스", "플라워클래스", "부케", "웨딩", "변화", "Byunhwa"],
+    icons: {
+        icon: [
+            { url: '/icon.png', type: 'image/png' },
+            { url: '/favicon.ico', sizes: 'any' },
+        ],
+        apple: [
+            { url: '/apple-icon.png', type: 'image/png' },
+        ],
+    },
     openGraph: {
         title: "변화 變花 | 변화를 추구합니다",
         description: "꽃을 통해 일상의 특별한 순간을 디자인합니다.",
