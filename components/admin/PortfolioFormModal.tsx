@@ -20,7 +20,7 @@ export default function PortfolioFormModal({
 }: PortfolioFormModalProps) {
     const [formData, setFormData] = useState({
         title: "",
-        category: "Wedding",
+        category: "Flower",
         description: "",
         display_order: 0,
     });
@@ -35,7 +35,7 @@ export default function PortfolioFormModal({
         if (initialData) {
             setFormData({
                 title: initialData.title || "",
-                category: initialData.category || "웨딩",
+                category: initialData.category || "Flower",
                 description: initialData.description || "",
                 display_order: initialData.display_order || 0,
             });
@@ -46,7 +46,7 @@ export default function PortfolioFormModal({
         } else {
             setFormData({
                 title: "",
-                category: "Wedding",
+                category: "Flower",
                 description: "",
                 display_order: 0,
             });
@@ -358,9 +358,10 @@ export default function PortfolioFormModal({
                                 }
                                 className="w-full bg-black/50 border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:border-primary transition-colors"
                             >
+                                <option value="Flower">Flower</option>
+                                <option value="Planterior">Planterior</option>
                                 <option value="Wedding">Wedding</option>
-                                <option value="Bouquet">Bouquet</option>
-                                <option value="Wreath">Wreath</option>
+                                <option value="Pop-Up">Pop-Up</option>
                                 <option value="Class">Class</option>
                                 <option value="Others">Others</option>
                             </select>

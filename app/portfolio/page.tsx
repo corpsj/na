@@ -17,7 +17,7 @@ interface PortfolioItem {
 }
 
 // 카테고리 목록
-const CATEGORIES = ['All', 'Wedding', 'Bouquet', 'Wreath', 'Class', 'Others'];
+const CATEGORIES = ['All', 'Flower', 'Planterior', 'Wedding', 'Pop-Up', 'Class', 'Others'];
 
 export default function PortfolioPage() {
     const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
