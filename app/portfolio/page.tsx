@@ -98,7 +98,7 @@ export default function PortfolioPage() {
 
                 {/* Category Filter */}
                 <FadeIn delay={200}>
-                    <div className="flex justify-center gap-6 mb-16 text-sm text-gray-400 overflow-x-auto pb-2">
+                    <div className="flex justify-start md:justify-center gap-6 mb-16 text-sm text-gray-400 overflow-x-auto pb-2 px-4 md:px-0 no-scrollbar">
                         {CATEGORIES.map((category) => (
                             <button
                                 key={category}
