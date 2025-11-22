@@ -374,7 +374,7 @@ Vercel Dashboard > Project Settings > Environment Variables:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbG...  (Sensitive 체크)
-NEXT_PUBLIC_SITE_URL=https://byunhwa.vercel.app
+NEXT_PUBLIC_SITE_URL=https://byeonhwa.vercel.app
 ```
 
 ### 3. 배포

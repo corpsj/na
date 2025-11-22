@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://byunhwa.vercel.app'),
+    metadataBase: new URL('https://byeonhwa.vercel.app'),
     title: {
         default: "변화 變花 | 변화를 추구합니다",
         template: "%s | 변화 變花"
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "변화 變花 | 변화를 추구합니다",
         description: "꽃을 통해 일상의 특별한 순간을 디자인합니다.",
-        url: 'https://byunhwa.vercel.app',
+        url: 'https://byeonhwa.vercel.app',
         siteName: '변화 變花',
         locale: 'ko_KR',
         type: 'website',
