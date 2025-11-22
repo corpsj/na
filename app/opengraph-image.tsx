@@ -14,70 +14,78 @@ export default async function Image() {
         (
             <div
                 style={{
-                    background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
                     width: '100%',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    backgroundColor: '#000000',
+                    position: 'relative',
                     fontFamily: 'system-ui, sans-serif',
                 }}
             >
-                {/* Logo Characters */}
+                {/* Background Image with Overlay */}
+                <img
+                    src="https://byunhwa.vercel.app/images/florist_portrait.jpg"
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.6,
+                    }}
+                    alt="background"
+                />
+
+                {/* Dark Overlay */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.4)',
+                    }}
+                />
+
+                {/* Content */}
                 <div
                     style={{
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '24px',
-                        marginBottom: '48px',
+                        justifyContent: 'center',
+                        zIndex: 10,
+                        position: 'relative',
                     }}
                 >
-                    <span
+                    {/* Title */}
+                    <div
                         style={{
-                            fontSize: 140,
+                            fontSize: 100,
                             fontWeight: 'bold',
                             color: '#FFFFFF',
-                            letterSpacing: '0.05em',
+                            marginBottom: '24px',
+                            letterSpacing: '0.2em',
                         }}
                     >
-                        變
-                    </span>
-                    <span
+                        BYUNHWA
+                    </div>
+
+                    {/* Subtitle */}
+                    <div
                         style={{
-                            fontSize: 140,
-                            fontWeight: 'bold',
-                            color: '#8B0000',
-                            letterSpacing: '0.05em',
+                            fontSize: 32,
+                            color: '#E5E7EB',
+                            textAlign: 'center',
+                            letterSpacing: '0.2em',
+                            textTransform: 'uppercase',
                         }}
                     >
-                        花
-                    </span>
-                </div>
-
-                {/* Title */}
-                <div
-                    style={{
-                        fontSize: 56,
-                        fontWeight: 'bold',
-                        color: '#FFFFFF',
-                        marginBottom: '24px',
-                        letterSpacing: '0.3em',
-                    }}
-                >
-                    BYUNHWA
-                </div>
-
-                {/* Description */}
-                <div
-                    style={{
-                        fontSize: 32,
-                        color: '#999999',
-                        textAlign: 'center',
-                        letterSpacing: '0.05em',
-                    }}
-                >
-                    꽃을 통해 일상의 특별한 순간을 디자인합니다
+                        FLORAL ARTISTRY & CLASSES
+                    </div>
                 </div>
             </div>
         ),
