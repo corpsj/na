@@ -89,28 +89,28 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                                     src={item.images[currentImageIndex]}
                                     alt={item.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 60vw"
                                     priority
                                     className="object-cover"
                                 />
                             </div>
 
-                            {/* Preload adjacent images */}
+                            {/* Preload all images for instant navigation */}
                             <div className="hidden">
                                 {item.images.map((src, idx) => {
-                                    // Preload prev and next images
-                                    if (idx === currentImageIndex - 1 || idx === currentImageIndex + 1) {
-                                        return (
-                                            <Image
-                                                key={src}
-                                                src={src}
-                                                alt="preload"
-                                                width={100}
-                                                height={100}
-                                                priority
-                                            />
-                                        );
-                                    }
-                                    return null;
+                                    // Skip current image (already loaded above)
+                                    if (idx === currentImageIndex) return null;
+
+                                    return (
+                                        <Image
+                                            key={src}
+                                            src={src}
+                                            alt="preload"
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 60vw"
+                                            priority={idx === currentImageIndex - 1 || idx === currentImageIndex + 1}
+                                        />
+                                    );
                                 })}
                             </div>
 
