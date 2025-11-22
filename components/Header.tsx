@@ -19,9 +19,6 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
 
-    // Hide Header on Admin pages
-    if (pathname.startsWith("/admin")) return null;
-
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
@@ -34,6 +31,9 @@ export default function Header() {
     useEffect(() => {
         setIsMobileMenuOpen(false);
     }, [pathname]);
+
+    // Hide Header on Admin pages
+    if (pathname.startsWith("/admin")) return null;
 
     return (
         <>

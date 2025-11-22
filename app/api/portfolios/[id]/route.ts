@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import type { Portfolio, PortfolioUpdate } from '@/types/database';
+import type { PortfolioUpdate } from '@/types/database';
 
 // GET /api/portfolios/[id] - 포트폴리오 상세 조회
 export async function GET(

@@ -4,7 +4,8 @@ export interface Portfolio {
   id: string;
   title: string;
   category: '웨딩' | '부케' | '화환' | '클래스작품' | '기타';
-  image_url: string;
+  image_url: string; // 대표 이미지 (첫 번째 이미지)
+  image_urls?: string[]; // 추가 이미지들
   description?: string;
   display_order: number;
   created_at: string;
@@ -35,7 +36,8 @@ export interface Class {
   category?: string;
   level?: string;
   description: string;
-  image_url: string;
+  image_url: string; // 대표 이미지 (첫 번째 이미지)
+  image_urls?: string[]; // 추가 이미지들
   location: string;
   duration: string;
   price: number;

@@ -5,12 +5,10 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface PortfolioItem {
-    id: number;
+    id: string;
     title: string;
     category: string;
     images: string[];
-    likes: number;
-    date: string;
     description?: string;
 }
 

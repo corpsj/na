@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const filePath = `${folder}/${fileName}`;
 
     // Supabase Storage에 업로드
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('byunhwa-images')
       .upload(filePath, file, {
         contentType: file.type,

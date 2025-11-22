@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import type { Class, ClassCreate, ClassSchedule } from '@/types/database';
+import type { ClassCreate } from '@/types/database';
 
 // GET /api/classes - 클래스 목록 조회 (스케줄 포함)
 export async function GET(request: NextRequest) {
