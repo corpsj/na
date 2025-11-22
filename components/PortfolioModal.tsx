@@ -154,9 +154,6 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                                     <p>
                                         {item.description || "자연스러운 흐름과 색감의 조화를 통해 공간에 생기를 불어넣는 디자인입니다. 계절의 변화를 담아 가장 아름다운 순간을 포착했습니다."}
                                     </p>
-                                    <p>
-                                        꽃이 가진 고유의 라인을 살려 인위적이지 않은 아름다움을 추구합니다. 특별한 날, 소중한 사람에게 마음을 전하기에 완벽한 선물입니다.
-                                    </p>
                                 </div>
 
                                 <div className="mt-12 pt-8 border-t border-gray-800">
