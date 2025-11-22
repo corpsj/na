@@ -48,6 +48,42 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
         }
     };
 
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(0); // Reset touch end
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            // Next Image
+            if (item && currentImageIndex < item.images.length - 1) {
+                setCurrentImageIndex(prev => prev + 1);
+            }
+        }
+
+        if (isRightSwipe) {
+            // Prev Image
+            if (currentImageIndex > 0) {
+                setCurrentImageIndex(prev => prev - 1);
+            }
+        }
+    };
+
     if (!isVisible && !isOpen) return null;
 
     return (
@@ -83,7 +119,12 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                 {item && (
                     <>
                         {/* Image Section (Carousel) */}
-                        <div className="relative w-full md:w-[60%] aspect-square bg-black flex items-center justify-center group">
+                        <div
+                            className="relative w-full md:w-[60%] aspect-square bg-black flex items-center justify-center group"
+                            onTouchStart={onTouchStart}
+                            onTouchMove={onTouchMove}
+                            onTouchEnd={onTouchEnd}
+                        >
                             <div className="relative w-full h-full">
                                 <Image
                                     src={item.images[currentImageIndex]}

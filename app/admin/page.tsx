@@ -115,10 +115,7 @@ export default function AdminLoginPage() {
                     </div>
                 </form>
 
-                <div className="text-center text-xs text-gray-500 mt-6">
-                    <p>Supabase Authentication을 사용합니다.</p>
-                    <p className="mt-1">관리자 계정은 Supabase Dashboard에서 생성하세요.</p>
-                </div>
+
             </div>
         </div>
     );
