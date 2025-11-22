@@ -161,7 +161,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
 
                         {/* Info Section (Clean Style) */}
                         <div className="w-full md:w-[40%] flex flex-col bg-gray-900 border-l border-gray-800 h-full">
-                            <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
+                            <div className="flex-1 p-8 md:p-12 flex flex-col justify-between">
                                 <div>
                                     <p className="text-primary text-sm tracking-widest uppercase mb-3 font-medium">
                                         {item.category}
@@ -169,12 +169,11 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                                     <h2 className="font-serif text-3xl md:text-4xl text-white mb-6 leading-tight">
                                         {item.title}
                                     </h2>
-                                </div>
-
-                                <div className="space-y-6 text-gray-300 font-light leading-relaxed text-sm md:text-base">
-                                    <p>
-                                        {item.description || "자연스러운 흐름과 색감의 조화를 통해 공간에 생기를 불어넣는 디자인입니다. 계절의 변화를 담아 가장 아름다운 순간을 포착했습니다."}
-                                    </p>
+                                    <div className="space-y-6 text-gray-300 font-light leading-relaxed text-sm md:text-base">
+                                        <p>
+                                            {item.description || "자연스러운 흐름과 색감의 조화를 통해 공간에 생기를 불어넣는 디자인입니다. 계절의 변화를 담아 가장 아름다운 순간을 포착했습니다."}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div className="mt-12 pt-8 border-t border-gray-800">
