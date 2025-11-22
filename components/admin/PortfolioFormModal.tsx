@@ -179,6 +179,50 @@ export default function PortfolioFormModal({
         toast.success('이미지가 삭제되었습니다.');
     };
 
+    const handleMoveImage = (index: number, direction: 'left' | 'right') => {
+        const newUrls = [...imageUrls];
+        const newPaths = [...uploadedImagePaths];
+        const targetIndex = direction === 'left' ? index - 1 : index + 1;
+
+        if (targetIndex < 0 || targetIndex >= newUrls.length) return;
+
+        // Swap URLs
+        [newUrls[index], newUrls[targetIndex]] = [newUrls[targetIndex], newUrls[index]];
+        // Swap Paths (if they exist, though paths array might be shorter if editing existing items without new uploads)
+        // Note: uploadedImagePaths only tracks *newly* uploaded files for deletion purposes.
+        // Swapping them strictly by index might be tricky if mixed with existing URLs.
+        // However, for display order, only imageUrls matters. 
+        // We should try to keep paths in sync if possible, but it's less critical as long as we don't lose track of what to delete.
+        // Ideally we should track objects { url, path } but for now let's just swap if indices match.
+        if (newPaths[index] !== undefined && newPaths[targetIndex] !== undefined) {
+            [newPaths[index], newPaths[targetIndex]] = [newPaths[targetIndex], newPaths[index]];
+        }
+
+        setImageUrls(newUrls);
+        setUploadedImagePaths(newPaths);
+    };
+
+    const handleSetMainImage = (index: number) => {
+        if (index === 0) return;
+
+        const newUrls = [...imageUrls];
+        const newPaths = [...uploadedImagePaths];
+
+        // Move selected item to front
+        const selectedUrl = newUrls.splice(index, 1)[0];
+        newUrls.unshift(selectedUrl);
+
+        // Handle paths similarly if possible
+        if (index < newPaths.length) {
+            const selectedPath = newPaths.splice(index, 1)[0];
+            newPaths.unshift(selectedPath);
+        }
+
+        setImageUrls(newUrls);
+        setUploadedImagePaths(newPaths);
+        toast.success('대표 이미지가 변경되었습니다.');
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -277,26 +321,71 @@ export default function PortfolioFormModal({
                                         }`}
                                 >
                                     {imageUrls.map((url, index) => (
-                                        <div key={index} className="relative aspect-square group">
+                                        <div key={index} className="relative aspect-square group bg-gray-800 rounded-md overflow-hidden border border-gray-700">
                                             <Image
                                                 src={url}
                                                 alt={`Image ${index + 1}`}
                                                 fill
                                                 sizes="(max-width: 768px) 50vw, 33vw"
-                                                className="object-cover rounded-md"
+                                                className="object-cover"
                                             />
+
+                                            {/* Labels & Controls Overlay */}
+                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
+                                                <div className="flex justify-between items-start">
+                                                    {index === 0 ? (
+                                                        <span className="bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                                                            Main
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleSetMainImage(index)}
+                                                            className="bg-white/20 hover:bg-primary text-white text-[10px] px-2 py-0.5 rounded transition-colors backdrop-blur-sm"
+                                                        >
+                                                            대표로 설정
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleImageDelete(index)}
+                                                        className="bg-red-500/80 p-1.5 rounded-full text-white hover:bg-red-600 transition-colors"
+                                                        title="삭제"
+                                                    >
+                                                        <X size={14} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="flex justify-center gap-2">
+                                                    {index > 0 && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleMoveImage(index, 'left')}
+                                                            className="bg-black/50 p-1.5 rounded hover:bg-white/20 text-white transition-colors"
+                                                            title="앞으로 이동"
+                                                        >
+                                                            ←
+                                                        </button>
+                                                    )}
+                                                    {index < imageUrls.length - 1 && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleMoveImage(index, 'right')}
+                                                            className="bg-black/50 p-1.5 rounded hover:bg-white/20 text-white transition-colors"
+                                                            title="뒤로 이동"
+                                                        >
+                                                            →
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Always visible Main label for mobile/glance */}
                                             {index === 0 && (
-                                                <div className="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded font-bold">
+                                                <div className="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded font-bold group-hover:opacity-0 transition-opacity">
                                                     대표
                                                 </div>
                                             )}
-                                            <button
-                                                type="button"
-                                                onClick={() => handleImageDelete(index)}
-                                                className="absolute top-2 right-2 bg-black/70 p-1.5 rounded-full text-white hover:bg-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                                            >
-                                                <X size={16} />
-                                            </button>
                                         </div>
                                     ))}
 
