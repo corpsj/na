@@ -89,8 +89,29 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                                     src={item.images[currentImageIndex]}
                                     alt={item.title}
                                     fill
+                                    priority
                                     className="object-cover"
                                 />
+                            </div>
+
+                            {/* Preload adjacent images */}
+                            <div className="hidden">
+                                {item.images.map((src, idx) => {
+                                    // Preload prev and next images
+                                    if (idx === currentImageIndex - 1 || idx === currentImageIndex + 1) {
+                                        return (
+                                            <Image
+                                                key={src}
+                                                src={src}
+                                                alt="preload"
+                                                width={100}
+                                                height={100}
+                                                priority
+                                            />
+                                        );
+                                    }
+                                    return null;
+                                })}
                             </div>
 
                             {/* Image Counter Badge */}
