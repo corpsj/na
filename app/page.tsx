@@ -23,14 +23,13 @@ export default function Home() {
                             FLORAL ARTISTRY & CLASSES
                         </p>
                     </FadeIn>
-                    {/* Temporarily hidden - to be restored later */}
-                    {/* <FadeIn delay={1000}>
+                    <FadeIn delay={1000}>
                         <div className="mt-12">
                             <a href="/portfolio" className="inline-block border border-white px-8 py-3 text-white hover:bg-white hover:text-black transition-colors duration-300 tracking-widest text-sm">
                                 EXPLORE WORK
                             </a>
                         </div>
-                    </FadeIn> */}
+                    </FadeIn>
                 </div>
             </section>
 
