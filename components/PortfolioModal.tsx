@@ -160,7 +160,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                         </div>
 
                         {/* Info Section (Clean Style) */}
-                        <div className="w-full md:w-[40%] flex flex-col bg-gray-900 border-l border-gray-800 h-full">
+                        <div className="w-full md:w-[40%] flex flex-col bg-gray-900 border-l border-gray-800">
                             <div className="flex-1 p-8 md:p-12 flex flex-col justify-between">
                                 <div>
                                     <p className="text-primary text-sm tracking-widest uppercase mb-3 font-medium">
