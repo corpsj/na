@@ -62,7 +62,7 @@ export default function PortfolioFormModal({
 
         // 파일 검증
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        const maxSize = 20 * 1024 * 1024; // 20MB
 
         const validFiles = filesArray.filter(file => {
             if (!allowedTypes.includes(file.type)) {
@@ -70,7 +70,7 @@ export default function PortfolioFormModal({
                 return false;
             }
             if (file.size > maxSize) {
-                toast.error(`${file.name}: 파일 크기는 5MB 이하여야 합니다.`);
+                toast.error(`${file.name}: 파일 크기는 20MB 이하여야 합니다.`);
                 return false;
             }
             return true;

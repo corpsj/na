@@ -83,7 +83,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                 {item && (
                     <>
                         {/* Image Section (Carousel) */}
-                        <div className="relative w-full md:w-[60%] aspect-square md:aspect-auto bg-black flex items-center justify-center group">
+                        <div className="relative w-full md:w-[60%] aspect-square bg-black flex items-center justify-center group">
                             <div className="relative w-full h-full">
                                 <Image
                                     src={item.images[currentImageIndex]}

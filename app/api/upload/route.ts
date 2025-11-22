@@ -35,11 +35,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 파일 크기 검증 (5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    // 파일 크기 검증 (20MB)
+    const maxSize = 20 * 1024 * 1024; // 20MB
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: 'File size exceeds 5MB limit' },
+        { error: 'File size exceeds 20MB limit' },
         { status: 400 }
       );
     }
