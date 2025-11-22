@@ -61,7 +61,7 @@ export default function Footer() {
 
                 <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
                     <p>
-                        &copy; {new Date().getFullYear()} <Link href="/admin/login" className="cursor-default">Byunhwa</Link>. All rights reserved.
+                        &copy; {new Date().getFullYear()} <Link href="/admin" className="cursor-default">Byunhwa</Link>. All rights reserved.
                     </p>
                     <div className="flex gap-4">
                         <Link href="/policy/terms" className="hover:text-primary transition-colors">이용약관</Link>

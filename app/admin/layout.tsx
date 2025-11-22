@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { toast } from "sonner";
 
 const adminNavItems = [
     { name: "대시보드", href: "/admin/dashboard", icon: "📊" },
@@ -19,12 +20,39 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     // Don't show layout on login page
     if (pathname === "/admin") {
         return <>{children}</>;
     }
+
+    const handleLogout = async () => {
+        if (isLoggingOut) return;
+
+        setIsLoggingOut(true);
+        try {
+            const response = await fetch('/api/admin/logout', {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                toast.error('로그아웃에 실패했습니다.');
+                return;
+            }
+
+            toast.success('로그아웃되었습니다.');
+            router.push('/admin');
+            router.refresh();
+        } catch (error) {
+            console.error('Logout error:', error);
+            toast.error('서버 오류가 발생했습니다.');
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-black flex">
@@ -54,12 +82,13 @@ export default function AdminLayout({
                 </nav>
 
                 <div className="p-4 border-t border-gray-800">
-                    <Link
-                        href="/admin"
-                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors px-4 py-2"
+                    <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors px-4 py-2 w-full disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <span>🚪</span> Logout
-                    </Link>
+                        <span>🚪</span> {isLoggingOut ? '로그아웃 중...' : 'Logout'}
+                    </button>
                 </div>
             </aside>
 
@@ -104,12 +133,13 @@ export default function AdminLayout({
                     ))}
                 </nav>
                 <div className="p-4 border-t border-gray-800 absolute bottom-0 w-full">
-                    <Link
-                        href="/admin"
-                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors px-4 py-2"
+                    <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors px-4 py-2 w-full disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        <span>🚪</span> Logout
-                    </Link>
+                        <span>🚪</span> {isLoggingOut ? '로그아웃 중...' : 'Logout'}
+                    </button>
                 </div>
             </div>
 
