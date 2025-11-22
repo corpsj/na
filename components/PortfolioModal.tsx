@@ -49,39 +49,32 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
     };
 
     const [touchStart, setTouchStart] = useState(0);
-    const [touchEnd, setTouchEnd] = useState(0);
-
-    const minSwipeDistance = 50;
+    const [currentTranslate, setCurrentTranslate] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
 
     const onTouchStart = (e: React.TouchEvent) => {
-        setTouchEnd(0); // Reset touch end
         setTouchStart(e.targetTouches[0].clientX);
+        setIsDragging(true);
     };
 
     const onTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
+        if (!isDragging) return;
+        const currentTouch = e.targetTouches[0].clientX;
+        const diff = currentTouch - touchStart;
+        setCurrentTranslate(diff);
     };
 
     const onTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
+        setIsDragging(false);
+        const moveThreshold = 100; // Minimum distance to change slide
 
-        const distance = touchStart - touchEnd;
-        const isLeftSwipe = distance > minSwipeDistance;
-        const isRightSwipe = distance < -minSwipeDistance;
-
-        if (isLeftSwipe) {
-            // Next Image
-            if (item && currentImageIndex < item.images.length - 1) {
-                setCurrentImageIndex(prev => prev + 1);
-            }
+        if (currentTranslate < -moveThreshold && item && currentImageIndex < item.images.length - 1) {
+            setCurrentImageIndex(prev => prev + 1);
+        } else if (currentTranslate > moveThreshold && currentImageIndex > 0) {
+            setCurrentImageIndex(prev => prev - 1);
         }
 
-        if (isRightSwipe) {
-            // Prev Image
-            if (currentImageIndex > 0) {
-                setCurrentImageIndex(prev => prev - 1);
-            }
-        }
+        setCurrentTranslate(0);
     };
 
     if (!isVisible && !isOpen) return null;
@@ -120,39 +113,34 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                     <>
                         {/* Image Section (Carousel) */}
                         <div
-                            className="relative w-full md:w-[60%] aspect-square bg-black flex items-center justify-center group"
+                            className="relative w-full md:w-[60%] aspect-square bg-black overflow-hidden group"
                             onTouchStart={onTouchStart}
                             onTouchMove={onTouchMove}
                             onTouchEnd={onTouchEnd}
                         >
-                            <div className="relative w-full h-full">
-                                <Image
-                                    src={item.images[currentImageIndex]}
-                                    alt={item.title}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 60vw"
-                                    priority
-                                    className="object-cover"
-                                />
-                            </div>
-
-                            {/* Preload all images for instant navigation */}
-                            <div className="hidden">
-                                {item.images.map((src, idx) => {
-                                    // Skip current image (already loaded above)
-                                    if (idx === currentImageIndex) return null;
-
-                                    return (
+                            {/* Sliding Track */}
+                            <div
+                                className={cn(
+                                    "flex h-full w-full",
+                                    !isDragging && "transition-transform duration-300 ease-out"
+                                )}
+                                style={{
+                                    transform: `translateX(calc(-${currentImageIndex * 100}% + ${currentTranslate}px))`
+                                }}
+                            >
+                                {item.images.map((src, idx) => (
+                                    <div key={idx} className="relative w-full h-full flex-shrink-0">
                                         <Image
-                                            key={src}
                                             src={src}
-                                            alt="preload"
+                                            alt={`${item.title} - ${idx + 1}`}
                                             fill
                                             sizes="(max-width: 768px) 100vw, 60vw"
-                                            priority={idx === currentImageIndex - 1 || idx === currentImageIndex + 1}
+                                            priority={idx === currentImageIndex}
+                                            className="object-cover"
+                                            draggable={false}
                                         />
-                                    );
-                                })}
+                                    </div>
+                                ))}
                             </div>
 
                             {/* Image Counter Badge */}
@@ -166,7 +154,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                             {currentImageIndex > 0 && (
                                 <button
                                     onClick={prevImage}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-all backdrop-blur-sm"
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-all backdrop-blur-sm z-20"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -176,7 +164,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                             {currentImageIndex < item.images.length - 1 && (
                                 <button
                                     onClick={nextImage}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-all backdrop-blur-sm"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-all backdrop-blur-sm z-20"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -186,7 +174,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
 
                             {/* Pagination Dots */}
                             {item.images.length > 1 && (
-                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
                                     {item.images.map((_, idx) => (
                                         <div
                                             key={idx}
@@ -217,11 +205,7 @@ export default function PortfolioModal({ item, isOpen, onClose }: PortfolioModal
                                     </div>
                                 </div>
 
-                                <div className="mt-12 pt-8 border-t border-gray-800">
-                                    <button className="w-full py-4 border border-white text-white hover:bg-white hover:text-black transition-all duration-300 tracking-widest text-sm uppercase">
-                                        Inquire about this
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
                     </>

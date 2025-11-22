@@ -12,6 +12,17 @@ export default function AdminLoginPage() {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
+    const [rememberId, setRememberId] = useState(false);
+    const [autoLogin, setAutoLogin] = useState(true);
+
+    useEffect(() => {
+        const savedEmail = localStorage.getItem("adminEmail");
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberId(true);
+        }
+    }, []);
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
@@ -35,6 +46,13 @@ export default function AdminLoginPage() {
                 setError(data.error || '로그인에 실패했습니다.');
                 toast.error('로그인 실패');
                 return;
+            }
+
+            // 아이디 저장 처리
+            if (rememberId) {
+                localStorage.setItem("adminEmail", email);
+            } else {
+                localStorage.removeItem("adminEmail");
             }
 
             toast.success('로그인 성공!');
@@ -95,6 +113,29 @@ export default function AdminLoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-4">
+                            <label className="flex items-center gap-2 cursor-pointer group">
+                                <input
+                                    type="checkbox"
+                                    checked={rememberId}
+                                    onChange={(e) => setRememberId(e.target.checked)}
+                                    className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary/50 transition-colors"
+                                />
+                                <span className="text-gray-400 group-hover:text-gray-300 transition-colors">아이디 저장</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer group">
+                                <input
+                                    type="checkbox"
+                                    checked={autoLogin}
+                                    onChange={(e) => setAutoLogin(e.target.checked)}
+                                    className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-primary focus:ring-primary/50 transition-colors"
+                                />
+                                <span className="text-gray-400 group-hover:text-gray-300 transition-colors">자동 로그인</span>
+                            </label>
                         </div>
                     </div>
 
