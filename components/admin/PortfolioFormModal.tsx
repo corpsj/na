@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Loader2, Plus, Upload } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
 
 interface PortfolioFormModalProps {
     isOpen: boolean;
@@ -81,27 +82,36 @@ export default function PortfolioFormModal({
         setIsUploading(true);
 
         try {
+            const supabase = createClient();
             const newUrls: string[] = [];
             const newPaths: string[] = [];
 
             for (const file of validFiles) {
-                const formDataToUpload = new FormData();
-                formDataToUpload.append('file', file);
-                formDataToUpload.append('folder', 'portfolios');
+                // 파일 확장자 추출 및 고유 파일명 생성
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+                const filePath = `portfolios/${fileName}`;
 
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: formDataToUpload,
-                });
+                // Supabase Storage에 직접 업로드
+                const { error: uploadError } = await supabase.storage
+                    .from('byunhwa-images')
+                    .upload(filePath, file, {
+                        contentType: file.type,
+                        cacheControl: '3600',
+                        upsert: false,
+                    });
 
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error || '업로드 실패');
+                if (uploadError) {
+                    throw new Error(uploadError.message || '업로드 실패');
                 }
 
-                newUrls.push(result.url);
-                newPaths.push(result.path);
+                // Public URL 생성
+                const { data: { publicUrl } } = supabase.storage
+                    .from('byunhwa-images')
+                    .getPublicUrl(filePath);
+
+                newUrls.push(publicUrl);
+                newPaths.push(filePath);
             }
 
             setImageUrls([...imageUrls, ...newUrls]);
@@ -154,14 +164,13 @@ export default function PortfolioFormModal({
         // 새로 업로드한 이미지만 서버에서 삭제
         if (imagePath) {
             try {
-                const response = await fetch('/api/upload', {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: imagePath }),
-                });
+                const supabase = createClient();
+                const { error } = await supabase.storage
+                    .from('byunhwa-images')
+                    .remove([imagePath]);
 
-                if (!response.ok) {
-                    throw new Error('삭제 실패');
+                if (error) {
+                    throw new Error(error.message || '삭제 실패');
                 }
             } catch (error) {
                 console.error('Delete error:', error);

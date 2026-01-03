@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Plus, Trash2, Loader2, Upload } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
 
 interface ClassFormModalProps {
     isOpen: boolean;
@@ -126,36 +127,44 @@ export default function ClassFormModal({
         setIsUploading(true);
 
         try {
+            const supabase = createClient();
+
             // 기존 이미지가 있으면 삭제
             if (uploadedImagePath) {
                 try {
-                    await fetch('/api/upload', {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: uploadedImagePath }),
-                    });
+                    await supabase.storage
+                        .from('byunhwa-images')
+                        .remove([uploadedImagePath]);
                 } catch (error) {
                     console.error('Previous image delete error:', error);
                 }
             }
 
-            const formDataToUpload = new FormData();
-            formDataToUpload.append('file', file);
-            formDataToUpload.append('folder', 'classes');
+            // 파일 확장자 추출 및 고유 파일명 생성
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const filePath = `classes/${fileName}`;
 
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formDataToUpload,
-            });
+            // Supabase Storage에 직접 업로드
+            const { error: uploadError } = await supabase.storage
+                .from('byunhwa-images')
+                .upload(filePath, file, {
+                    contentType: file.type,
+                    cacheControl: '3600',
+                    upsert: false,
+                });
 
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || '업로드 실패');
+            if (uploadError) {
+                throw new Error(uploadError.message || '업로드 실패');
             }
 
-            setImageUrl(result.url);
-            setUploadedImagePath(result.path);
+            // Public URL 생성
+            const { data: { publicUrl } } = supabase.storage
+                .from('byunhwa-images')
+                .getPublicUrl(filePath);
+
+            setImageUrl(publicUrl);
+            setUploadedImagePath(filePath);
             toast.success('이미지가 업로드되었습니다.');
         } catch (error: any) {
             console.error('Upload error:', error);
@@ -200,14 +209,13 @@ export default function ClassFormModal({
     const handleImageDelete = async () => {
         if (uploadedImagePath) {
             try {
-                const response = await fetch('/api/upload', {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: uploadedImagePath }),
-                });
+                const supabase = createClient();
+                const { error } = await supabase.storage
+                    .from('byunhwa-images')
+                    .remove([uploadedImagePath]);
 
-                if (!response.ok) {
-                    throw new Error('삭제 실패');
+                if (error) {
+                    throw new Error(error.message || '삭제 실패');
                 }
             } catch (error) {
                 console.error('Delete error:', error);
@@ -442,11 +450,10 @@ export default function ClassFormModal({
                                 onDragLeave={handleDragLeave}
                                 onDrop={handleDrop}
                                 onClick={() => !isUploading && fileInputRef.current?.click()}
-                                className={`border-2 border-dashed rounded-lg p-12 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${
-                                    isDragging
+                                className={`border-2 border-dashed rounded-lg p-12 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${isDragging
                                         ? 'border-primary bg-primary/10'
                                         : 'border-gray-700 hover:border-primary/50 bg-black/20'
-                                } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 {isUploading ? (
                                     <>
@@ -471,9 +478,8 @@ export default function ClassFormModal({
                                 onDragOver={handleDragOver}
                                 onDragLeave={handleDragLeave}
                                 onDrop={handleDrop}
-                                className={`relative aspect-video rounded-lg overflow-hidden border-2 border-dashed transition-colors ${
-                                    isDragging ? 'border-primary bg-primary/10' : 'border-transparent'
-                                }`}
+                                className={`relative aspect-video rounded-lg overflow-hidden border-2 border-dashed transition-colors ${isDragging ? 'border-primary bg-primary/10' : 'border-transparent'
+                                    }`}
                             >
                                 <Image
                                     src={imageUrl}
