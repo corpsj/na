@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import PortfolioFormModal from "@/components/admin/PortfolioFormModal";
-import { Plus, MoreVertical } from "lucide-react";
+import { Plus, MoreVertical, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
@@ -143,12 +143,18 @@ export default function AdminPortfolioPage() {
                                         <span className="text-xs">No Image</span>
                                     </div>
                                 )}
-                                <div className="absolute top-2 right-2">
+                                <div className="absolute top-2 right-2 flex gap-1">
                                     <button
                                         onClick={() => handleEdit(item)}
                                         className="bg-black/50 backdrop-blur-md p-1.5 rounded-full text-white hover:bg-black transition-colors"
                                     >
                                         <MoreVertical size={14} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
+                                        className="bg-red-500/50 backdrop-blur-md p-1.5 rounded-full text-white hover:bg-red-600 transition-colors"
+                                    >
+                                        <Trash2 size={14} />
                                     </button>
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, CheckCircle2, Clock, XCircle, Phone, Mail } from "lucide-react";
+import { X, CheckCircle2, Clock, XCircle, Phone, Mail, Trash2 } from "lucide-react";
 import type { Order } from "@/types/database";
 
 interface OrderManagementModalProps {
@@ -11,6 +11,7 @@ interface OrderManagementModalProps {
     classTitle?: string;
     classPrice?: string;
     onUpdateStatus: (orderId: string, newStatus: string, notes?: string) => void;
+    onDelete?: (orderId: string) => void;
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -34,6 +35,7 @@ export default function OrderManagementModal({
     classTitle,
     classPrice,
     onUpdateStatus,
+    onDelete,
 }: OrderManagementModalProps) {
     const [status, setStatus] = useState<string>("");
     const [note, setNote] = useState("");
@@ -125,11 +127,10 @@ export default function OrderManagementModal({
                                 <button
                                     key={statusValue}
                                     onClick={() => setStatus(statusValue)}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all ${
-                                        status === statusValue
+                                    className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all ${status === statusValue
                                             ? STATUS_COLORS[statusValue]
                                             : "bg-gray-800 border-transparent text-gray-400 hover:bg-gray-700"
-                                    }`}
+                                        }`}
                                 >
                                     {statusValue === 'pending' && <Clock size={20} className="mb-1" />}
                                     {statusValue === 'confirmed' && <CheckCircle2 size={20} className="mb-1" />}
@@ -155,6 +156,20 @@ export default function OrderManagementModal({
 
                 {/* Footer */}
                 <div className="p-6 border-t border-gray-800 flex justify-end gap-3 bg-gray-900">
+                    {onDelete && (
+                        <button
+                            onClick={() => {
+                                if (confirm('정말 이 신청 내역을 삭제하시겠습니까?')) {
+                                    onDelete(order.id);
+                                    onClose();
+                                }
+                            }}
+                            className="mr-auto px-4 py-2 text-sm font-medium text-red-500 hover:text-red-400 transition-colors flex items-center gap-2"
+                        >
+                            <Trash2 size={16} />
+                            삭제하기
+                        </button>
+                    )}
                     <button
                         onClick={onClose}
                         className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"

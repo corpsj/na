@@ -7,7 +7,9 @@ import {
     Users,
     CheckCircle2,
     Clock,
-    XCircle
+    XCircle,
+    Trash2,
+    Filter
 } from "lucide-react";
 import Image from "next/image";
 import ClassFormModal from "@/components/admin/ClassFormModal";
@@ -29,6 +31,7 @@ export default function AdminClassPage() {
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
     const [editingClass, setEditingClass] = useState<Class | null>(null);
     const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+    const [filterClassId, setFilterClassId] = useState<string>("all");
 
     // Data State
     const [classes, setClasses] = useState<ClassWithStats[]>([]);
@@ -190,6 +193,22 @@ export default function AdminClassPage() {
         }
     };
 
+    const handleOrderDelete = async (orderId: string) => {
+        try {
+            const response = await fetch(`/api/orders/${orderId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) throw new Error('삭제 실패');
+            toast.success("신청 내역이 삭제되었습니다.");
+            await loadOrders();
+            await loadClasses(); // 수강 인원 통계 업데이트
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            toast.error('삭제에 실패했습니다.');
+        }
+    };
+
     const getStatusBadge = (cls: Class) => {
         if (!cls.is_active) return { label: '종료', className: 'bg-gray-500/80 text-white' };
         return { label: '모집중', className: 'bg-green-500/80 text-white' };
@@ -282,6 +301,7 @@ export default function AdminClassPage() {
                 classTitle={selectedOrder ? classes.find(c => c.id === selectedOrder.class_id)?.title : undefined}
                 classPrice={selectedOrder ? classes.find(c => c.id === selectedOrder.class_id)?.price_display : undefined}
                 onUpdateStatus={handleOrderStatusUpdate}
+                onDelete={handleOrderDelete}
             />
 
             {/* Content */}
@@ -374,12 +394,29 @@ export default function AdminClassPage() {
                 {/* APPLICATIONS TAB */}
                 {activeTab === "applications" && (
                     <>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <h2 className="text-xl font-serif text-white">수강 신청 내역</h2>
+                            <div className="flex items-center gap-2 bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 w-full md:w-auto">
+                                <Filter size={16} className="text-gray-500" />
+                                <select
+                                    value={filterClassId}
+                                    onChange={(e) => setFilterClassId(e.target.value)}
+                                    className="bg-transparent text-gray-300 text-sm focus:outline-none w-full cursor-pointer"
+                                >
+                                    <option value="all">모든 클래스 보기</option>
+                                    {classes.map(cls => (
+                                        <option key={cls.id} value={cls.id}>{cls.title}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
                         {isLoadingOrders ? (
                             <div className="text-center py-20">
                                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
                                 <p className="text-gray-400 mt-4">로딩 중...</p>
                             </div>
-                        ) : orders.length === 0 ? (
+                        ) : orders.filter(o => filterClassId === 'all' || o.class_id === filterClassId).length === 0 ? (
                             <div className="text-center py-20 border border-gray-800 rounded-lg">
                                 <p className="text-gray-400">신청 내역이 없습니다.</p>
                             </div>
@@ -387,31 +424,43 @@ export default function AdminClassPage() {
                             <div className="space-y-4">
                                 {/* Mobile View (Cards) */}
                                 <div className="md:hidden grid grid-cols-2 gap-3">
-                                    {orders.map((order) => {
-                                        const statusLabel = getOrderStatusLabel(order.status);
-                                        const statusClass = getOrderStatusClass(order.status);
-                                        return (
-                                            <div key={order.id} className="bg-gray-900/50 border border-gray-800 rounded-lg p-3 flex flex-col h-full">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${statusClass}`}>
-                                                        {statusLabel}
-                                                    </span>
-                                                    <button
-                                                        onClick={() => handleOrderClick(order)}
-                                                        className="text-gray-400 hover:text-white"
-                                                    >
-                                                        <MoreVertical size={14} />
-                                                    </button>
-                                                </div>
+                                    {orders
+                                        .filter(o => filterClassId === 'all' || o.class_id === filterClassId)
+                                        .map((order) => {
+                                            const statusLabel = getOrderStatusLabel(order.status);
+                                            const statusClass = getOrderStatusClass(order.status);
+                                            return (
+                                                <div key={order.id} className="bg-gray-900/50 border border-gray-800 rounded-lg p-3 flex flex-col h-full">
+                                                    <div className="flex justify-between items-start mb-2">
+                                                        <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${statusClass}`}>
+                                                            {statusLabel}
+                                                        </span>
+                                                        <div className="flex gap-1">
+                                                            <button
+                                                                onClick={() => handleOrderClick(order)}
+                                                                className="text-gray-400 hover:text-white p-1"
+                                                            >
+                                                                <MoreVertical size={14} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => {
+                                                                    if (confirm('정말 삭제하시겠습니까?')) handleOrderDelete(order.id);
+                                                                }}
+                                                                className="text-red-500/70 hover:text-red-500 p-1"
+                                                            >
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
-                                                <div className="flex-1 space-y-1 mb-3">
-                                                    <h3 className="text-white text-sm font-medium truncate">{order.name}</h3>
-                                                    <p className="text-xs text-gray-500 truncate">{order.schedule_display || '일정 미정'}</p>
-                                                    <p className="text-xs text-gray-400">{new Date(order.created_at).toLocaleDateString('ko-KR')}</p>
+                                                    <div className="flex-1 space-y-1 mb-3">
+                                                        <h3 className="text-white text-sm font-medium truncate">{order.name}</h3>
+                                                        <p className="text-xs text-gray-500 truncate">{order.schedule_display || '일정 미정'}</p>
+                                                        <p className="text-xs text-gray-400">{new Date(order.created_at).toLocaleDateString('ko-KR')}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
+                                            );
+                                        })}
                                 </div>
 
                                 {/* Desktop View (Table) */}
@@ -429,39 +478,51 @@ export default function AdminClassPage() {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-800">
-                                                {orders.map((order) => {
-                                                    const statusLabel = getOrderStatusLabel(order.status);
-                                                    const statusClass = getOrderStatusClass(order.status);
-                                                    return (
-                                                        <tr key={order.id} className="hover:bg-white/5 transition-colors">
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <div className="text-white font-medium">{order.name}</div>
-                                                                {order.email && <div className="text-gray-500 text-xs">{order.email}</div>}
-                                                            </td>
-                                                            <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">{order.phone}</td>
-                                                            <td className="px-6 py-4 text-gray-400 text-sm">{order.schedule_display || '일정 미정'}</td>
-                                                            <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">
-                                                                {new Date(order.created_at).toLocaleDateString('ko-KR')}
-                                                            </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusClass}`}>
-                                                                    {order.status === 'confirmed' && <CheckCircle2 size={12} />}
-                                                                    {order.status === 'pending' && <Clock size={12} />}
-                                                                    {order.status === 'cancelled' && <XCircle size={12} />}
-                                                                    {statusLabel}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4 text-right whitespace-nowrap">
-                                                                <button
-                                                                    onClick={() => handleOrderClick(order)}
-                                                                    className="text-gray-400 hover:text-white p-2"
-                                                                >
-                                                                    <MoreVertical size={16} />
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
+                                                {orders
+                                                    .filter(o => filterClassId === 'all' || o.class_id === filterClassId)
+                                                    .map((order) => {
+                                                        const statusLabel = getOrderStatusLabel(order.status);
+                                                        const statusClass = getOrderStatusClass(order.status);
+                                                        return (
+                                                            <tr key={order.id} className="hover:bg-white/5 transition-colors">
+                                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                                    <div className="text-white font-medium">{order.name}</div>
+                                                                    {order.email && <div className="text-gray-500 text-xs">{order.email}</div>}
+                                                                </td>
+                                                                <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">{order.phone}</td>
+                                                                <td className="px-6 py-4 text-gray-400 text-sm">{order.schedule_display || '일정 미정'}</td>
+                                                                <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">
+                                                                    {new Date(order.created_at).toLocaleDateString('ko-KR')}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusClass}`}>
+                                                                        {order.status === 'confirmed' && <CheckCircle2 size={12} />}
+                                                                        {order.status === 'pending' && <Clock size={12} />}
+                                                                        {order.status === 'cancelled' && <XCircle size={12} />}
+                                                                        {statusLabel}
+                                                                    </span>
+                                                                </td>
+                                                                <td className="px-6 py-4 text-right whitespace-nowrap space-x-1">
+                                                                    <button
+                                                                        onClick={() => handleOrderClick(order)}
+                                                                        className="text-gray-400 hover:text-white p-2"
+                                                                        title="상세 보기"
+                                                                    >
+                                                                        <MoreVertical size={16} />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            if (confirm('정말 이 신청 내역을 삭제하시겠습니까?')) handleOrderDelete(order.id);
+                                                                        }}
+                                                                        className="text-gray-500 hover:text-red-500 p-2"
+                                                                        title="삭제"
+                                                                    >
+                                                                        <Trash2 size={16} />
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
                                             </tbody>
                                         </table>
                                     </div>
